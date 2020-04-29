@@ -1,0 +1,52 @@
+<script>
+    function convertStringToNumber(string, x) {
+        var chars = string.split('')
+        var number = 0
+        var  i = 0
+        while(i < chars.length && chars[i] !== '.' && (chars[i] !== 'e' && chars[i] !== 'E')) {
+            number = number * x
+            number += chars[i].codePointAt(0) - '0'.codePointAt(0)
+            i++
+        }
+        if(chars[i] == '.' && (chars[i] !== 'e' && chars[i] !== 'E')) {
+            i++
+        }
+        var fraction = 1
+        while(i < chars.length && (chars[i] !== 'e' && chars[i] !== 'E')) {
+            fraction = fraction/x
+            number += (chars[i].codePointAt(0) - '0'.codePointAt(0))*fraction
+            i++
+        }
+        if(chars[i] == 'e' || chars[i] == 'E' ) {
+            i++
+        }
+        var j = 0
+        var exponent = (chars[i].codePointAt(0) - '0'.codePointAt(0))
+        while(j <= exponent) {
+            number = number*x
+            j++
+        }
+        return number
+    }
+    // console.log(convertStringToNumber('123.0123e0', x))
+
+    function convertNumberToString(number, x) {
+        var cNumber = Number(number)
+        var integer = Math.floor(cNumber)
+        var fraction = parseFloat((cNumber - integer).toFixed(10))
+        var string = ''
+        while(integer > 0) {
+            string = integer % x + string
+            integer = Math.floor(integer/x)
+        }
+        var fString = '.'
+        while(fraction > 0) {
+            fString += Math.floor(fraction*x)
+            fraction = parseFloat((fraction*x - Math.floor(fraction*x)).toFixed(10))
+        }
+        return string + fString
+    }
+    console.log(convertNumberToString(103.36, 10))
+</script>
+
+
